@@ -1,3 +1,7 @@
+const fetch = require('node-fetch');
+const Agent = require('https').Agent;
+const apollo = require('apollo-link-http');
+
 module.exports = {
   siteMetadata: {
     title: `My Blog`,
@@ -21,6 +25,22 @@ module.exports = {
         icon: `src/images/midtype-logo.png`
       }
     },
-    `gatsby-plugin-offline`
+    `gatsby-plugin-offline`,
+    {
+      resolve: 'gatsby-source-graphql',
+      options: {
+        typeName: 'Midtype',
+        fieldName: 'midtype',
+        createLink: () => {
+          return apollo.createHttpLink({
+            uri: 'https://blog-staging.midtype.dev/graphql',
+            fetchOptions: {
+              agent: new Agent({ rejectUnauthorized: false })
+            },
+            fetch
+          });
+        }
+      }
+    }
   ]
 };
