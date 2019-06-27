@@ -1,7 +1,7 @@
 module.exports = {
   siteMetadata: {
-    title: `Midtype Starter`,
-    description: `A starter for using Midtype with GatsbyJS and Typescript.`,
+    title: `My Blog`,
+    description: `A blog created using Midtype with GatsbyJS and Typescript.`,
     author: `@midtype`
   },
   plugins: [

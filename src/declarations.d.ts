@@ -8,3 +8,8 @@ interface ISiteMetadata {
   author: string;
   description: string;
 }
+
+interface ISection {
+  title: string;
+  id: string;
+}
