@@ -5,14 +5,14 @@ import { useStaticQuery, graphql } from 'gatsby';
 
 import GlobalStyle from './GlobalStyle';
 import Icon from '../images/midtype-logo.png';
-import Nav from '../components/Nav';
+
+interface IProps {
+  pageTitle?: string;
+}
 
 interface IQuery {
   site: {
     siteMetadata: ISiteMetadata;
-  };
-  allPages: {
-    nodes: IPage[];
   };
 }
 
@@ -29,14 +29,6 @@ const query = graphql`
         author
       }
     }
-    allPages {
-      nodes {
-        id
-        title
-        template
-        slug
-      }
-    }
   }
 `;
 
@@ -49,9 +41,6 @@ const Main = styled.main`
 const Layout: React.FC<IProps> = props => {
   const data: IQuery = useStaticQuery(query);
   const { title, description, author } = data.site.siteMetadata;
-  const pages = data.allPages.nodes.filter(
-    page => !page.template || page.template === 'page'
-  );
   const pageTitle = `${title}${props.pageTitle ? ` | ${props.pageTitle}` : ''}`;
   return (
     <React.Fragment>
@@ -107,7 +96,6 @@ const Layout: React.FC<IProps> = props => {
           }
         ]}
       />
-      <Nav pages={pages} />
       <Main>{props.children}</Main>
       <GlobalStyle />
     </React.Fragment>

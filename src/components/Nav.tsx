@@ -3,7 +3,7 @@ import { Link } from 'gatsby';
 import styled from 'styled-components';
 
 interface IProps {
-  sections: ISection[];
+  pages: IPage[];
 }
 
 const Styled = styled.header`
@@ -11,7 +11,6 @@ const Styled = styled.header`
   height: 5rem;
   top: 0;
   left: 0;
-  position: fixed;
   background: rgba(255, 255, 255, 0.95);
   padding: 0 2rem;
   display: grid;
@@ -22,6 +21,7 @@ const Styled = styled.header`
     align-items: center;
     font-weight: 600;
     font-size: 1.2rem;
+    color: black;
   }
 
   .nav__logo__letter {
@@ -39,30 +39,32 @@ const Styled = styled.header`
     align-items: center;
     justify-content: center;
   }
-  .nav__sections__section {
-    font-weight: 600;
-    color: rgba(0, 0, 0, 0.7);
-    padding: 0.5rem;
+  .nav__sections__section a {
+    color: black;
+    margin: 0.5rem 1rem;
+    padding-bottom: 0.5rem;
     cursor: pointer;
     transition: 250ms all;
+    border-bottom: 2px solid rgba(0, 0, 0, 0);
   }
-  .nav__sections__section:hover {
+  .nav__sections__section:hover a {
     color: rgba(0, 0, 0, 1);
     transform: translateY(-3px);
+    border-bottom: 2px solid black;
   }
 `;
 
 const Nav: React.FC<IProps> = props => {
   return (
     <Styled>
-      <div className="nav__logo">
+      <Link to="/" className="nav__logo">
         <div className="nav__logo__letter">M</div>
         <div className="nav__logo__name">Midtype Portfolio</div>
-      </div>
+      </Link>
       <div className="nav__sections">
-        {props.sections.map(section => (
-          <div className="nav__sections__section">
-            <Link to="/">{section.title}</Link>
+        {props.pages.map(page => (
+          <div key={page.id} className="nav__sections__section">
+            <Link to={page.slug}>{page.title}</Link>
           </div>
         ))}
       </div>
