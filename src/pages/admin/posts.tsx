@@ -1,7 +1,9 @@
 import React from 'react';
 import { PageRendererProps } from 'gatsby';
 import styled from 'styled-components';
-import EditorJs from 'react-editor-js';
+import Loadable from '@loadable/component';
+
+const EditorJs = Loadable(() => import('react-editor-js'));
 
 import Editor from '../../layout/Editor';
 
