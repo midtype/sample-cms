@@ -1,7 +1,11 @@
+const createHttpLink = require('apollo-link-http').createHttpLink;
+const Agent = require('https').Agent;
+const fetch = require('isomorphic-fetch');
+
 module.exports = {
   siteMetadata: {
-    title: `Midtype Starter`,
-    description: `A starter for using Midtype with GatsbyJS and Typescript.`,
+    title: `My Blog`,
+    description: `A blog created using Midtype with GatsbyJS and Typescript.`,
     author: `@midtype`
   },
   plugins: [
