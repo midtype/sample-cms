@@ -1,3 +1,7 @@
+const createHttpLink = require('apollo-link-http').createHttpLink;
+const Agent = require('https').Agent;
+const fetch = require('isomorphic-fetch');
+
 module.exports = {
   siteMetadata: {
     title: `My Blog`,

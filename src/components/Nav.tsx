@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'gatsby';
 import styled from 'styled-components';
 
+import Logo from './Logo';
+
 interface IProps {
   pages: IPage[];
 }
@@ -15,25 +17,8 @@ const Styled = styled.header`
   padding: 0 2rem;
   display: grid;
   grid-template-columns: 1fr 5fr 1fr;
+  align-items: center;
 
-  .nav__logo {
-    display: flex;
-    align-items: center;
-    font-weight: 600;
-    font-size: 1.2rem;
-    color: black;
-  }
-
-  .nav__logo__letter {
-    width: 2.5rem;
-    height: 2.5rem;
-    background: black;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 0.75rem;
-  }
   .nav__sections {
     display: flex;
     align-items: center;
@@ -57,10 +42,7 @@ const Styled = styled.header`
 const Nav: React.FC<IProps> = props => {
   return (
     <Styled>
-      <Link to="/" className="nav__logo">
-        <div className="nav__logo__letter">M</div>
-        <div className="nav__logo__name">Midtype Portfolio</div>
-      </Link>
+      <Logo />
       <div className="nav__sections">
         {props.pages.map(page => (
           <div key={page.id} className="nav__sections__section">

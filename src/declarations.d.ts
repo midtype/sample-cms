@@ -3,6 +3,8 @@ declare module 'is-touch-device';
 declare module 'graphiql';
 declare module '@loadable/component';
 
+// GraphQL API Types
+
 interface ISiteMetadata {
   title: string;
   author: string;
@@ -20,4 +22,11 @@ interface IPage {
   slug: string;
   description: string;
   template?: string;
+}
+
+interface IUser {
+  id: string;
+  name: string;
+  email: string;
+  photoUrl: string;
 }

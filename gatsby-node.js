@@ -3,7 +3,7 @@ const path = require('path');
 const Agent = require('https').Agent;
 
 const url = 'https://blog-staging.midtype.dev/graphql';
-console.log(process.env.API_URL);
+
 const getQuery = type => `
 query { 
   __type(name: "${type}") {
