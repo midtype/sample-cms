@@ -41,7 +41,7 @@ const Login: React.FC<PageRendererProps> = props => {
       <Styled>
         <Logo />
         <h2>Let&#8217;s Get Editing</h2>
-        <a href={process.env.GOOGLE_SIGN_IN}>
+        <a href={process.env.GATSBY_GOOGLE_SIGN_IN}>
           <img className="google" src={GoogleSignIn} />
         </a>
       </Styled>

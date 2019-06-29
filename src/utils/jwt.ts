@@ -1,4 +1,4 @@
-const STORAGE_KEY = `${process.env.MY_APP_ID}:jwt`;
+const STORAGE_KEY = `${process.env.GATSBY_MY_APP_ID}:jwt`;
 
 export const setJWT = (jwt: string) => {
   window.localStorage.setItem(STORAGE_KEY, jwt);
