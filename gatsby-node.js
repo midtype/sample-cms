@@ -155,3 +155,12 @@ exports.sourceNodes = ({ actions, createNodeId, createContentDigest }) => {
     });
   });
 };
+
+// This is necessary to create client only paths for the pages and blog posts.
+exports.onCreatePage = ({ page, actions }) => {
+  const { createPage } = actions;
+  if (page.path === `/admin/pages/`) {
+    page.matchPath = `/admin/pages/*`;
+    createPage(page);
+  }
+};

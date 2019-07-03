@@ -21,6 +21,11 @@ p, input, textarea {
   color: rgba(0,0,0,.7);
 }
 
+input {
+  padding: 1rem;
+  outline: none;
+}
+
 h1,h2,h3,h4,h5 {
   margin: 0;
   padding: 0;
@@ -41,9 +46,44 @@ a, button {
   font-size: inherit;
 }
 
+button {
+  padding: 0.5rem 1rem;
+  border: 1px solid black;
+  border-radius: 3px;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 0.6rem;
+  background: black;
+  color: white;
+}
+
+button.secondary {
+  background: white;
+  color: black;
+}
+
 h1 {
   font-size: 4rem;
   font-weight: 700;
+}
+
+h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+label {
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 0.6rem;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 `;
