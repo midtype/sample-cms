@@ -36,6 +36,12 @@ const Styled = styled.div`
     font-size: 0.8rem;
     font-weight: 600;
   }
+  .toolbar__section--buttons {
+    flex-flow: row;
+  }
+  .toolbar__section--buttons button {
+    margin-left: 0.5rem;
+  }
   .page {
     max-width: 50rem;
     margin: auto;
@@ -126,10 +132,15 @@ const Page: React.FC<{ navigate?: NavigateFn; page?: IPage }> = props => {
           <label>Page ID</label>
           <p>{page ? page.id : 'New Page'}</p>
         </div>
-        <div className="toolbar__section">
+        <div className="toolbar__section toolbar__section--buttons">
           {!editing && (
             <button className="secondary" onClick={() => setEditing(true)}>
               Edit
+            </button>
+          )}
+          {editing && (
+            <button className="secondary" onClick={() => setEditing(false)}>
+              Cancel
             </button>
           )}
           {editing && SaveButton}

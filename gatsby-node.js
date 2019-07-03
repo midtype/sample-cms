@@ -158,9 +158,14 @@ exports.sourceNodes = ({ actions, createNodeId, createContentDigest }) => {
 
 // This is necessary to create client only paths for the pages and blog posts.
 exports.onCreatePage = ({ page, actions }) => {
+  // Redirect all subroutes under the admin pages and posts sections to the same parent pages.
   const { createPage } = actions;
   if (page.path === `/admin/pages/`) {
     page.matchPath = `/admin/pages/*`;
+    createPage(page);
+  }
+  if (page.path === `/admin/posts/`) {
+    page.matchPath = `/admin/posts/*`;
     createPage(page);
   }
 };

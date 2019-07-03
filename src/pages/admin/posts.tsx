@@ -1,51 +1,82 @@
 import React from 'react';
-import { PageRendererProps } from 'gatsby';
+import { Link, PageRendererProps } from 'gatsby';
+import { Router, RouteComponentProps } from '@reach/router';
+import { Query, QueryResult } from 'react-apollo';
 import styled from 'styled-components';
-import Loadable from '@loadable/component';
 
-const EditorJs = Loadable(() => import('react-editor-js'));
-
+import GET_POSTS, { IPosts } from '../../apollo/graphql/getPosts';
+import Arrow from '../../icons/Arrow';
+import ListItem from '../../components/ListItem';
+import Loader from '../../components/Loader';
 import Editor from '../../layout/Editor';
+import PostEditor from '../../components/BlogPostEditor';
 
 const Styled = styled.div`
   margin-top: 3rem;
-  .codex-editor {
-    padding-top: 1rem;
-    overflow: hidden;
+  .posts-list {
     max-width: 50rem;
     margin: auto;
-    background: white;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.06);
   }
 `;
 
-const AdminPages: React.FC<PageRendererProps> = props => {
+const PostListing: React.FC<IPost> = props => {
+  const { title, slug, body } = props;
+  return (
+    <Link to={`/admin/posts/${props.id}`}>
+      <ListItem>
+        <div className="text">
+          <h3>
+            {title}
+            <span>{slug}</span>
+          </h3>
+          <p>{body}</p>
+        </div>
+        <Arrow />
+      </ListItem>
+    </Link>
+  );
+};
+
+const PostsList: React.FC<RouteComponentProps> = () => (
+  <Styled>
+    <Query query={GET_POSTS}>
+      {({ data, error, loading }: QueryResult<IPosts>) => {
+        if (loading) {
+          return <Loader />;
+        }
+        if (error) {
+          return null;
+        }
+        return (
+          <div className="posts-list">
+            {data &&
+              data.posts.nodes.map(page => (
+                <PostListing key={page.id} {...page} />
+              ))}
+            <Link to="/admin/pages/new">
+              <ListItem className="add-new">
+                <div className="text">
+                  <h3>Create New Post</h3>
+                </div>
+                <Arrow />
+              </ListItem>
+            </Link>
+          </div>
+        );
+      }}
+    </Query>
+  </Styled>
+);
+
+const AdminPosts: React.FC<PageRendererProps> = props => {
   return (
     <Editor location={props.location}>
-      <Styled>
-        <EditorJs
-          data={{
-            time: 1556098174501,
-            blocks: [
-              {
-                type: 'header',
-                data: {
-                  text: 'My New Post',
-                  level: 1
-                }
-              },
-              {
-                type: 'paragraph',
-                data: {
-                  text: 'Hello everyone!'
-                }
-              }
-            ]
-          }}
-        />
-      </Styled>
+      <Router>
+        <PostsList path="admin/posts" />
+        <PostEditor path="admin/posts/:id" />
+      </Router>
     </Editor>
   );
 };
 
-export default AdminPages;
+export default AdminPosts;
