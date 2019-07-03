@@ -40,7 +40,7 @@ const Styled = styled.header`
   }
 `;
 
-const Nav: React.FC = () => {
+const Nav: React.FC = (p, c) => {
   return (
     <Styled>
       <Symbol />

@@ -51,11 +51,14 @@ const Main = styled.main`
   background: rgba(0, 0, 0, 0.04);
 `;
 
+export const UserContext = React.createContext<null | IUser>(null);
+
 const Layout: React.FC<IProps> = props => {
   const queryData: IQuery = useStaticQuery(query);
   const { title, description, author } = queryData.site.siteMetadata;
   const pageTitle = `${title}${props.pageTitle ? ` | ${props.pageTitle}` : ''}`;
   const isLoginPage = props.location.pathname.indexOf('/login') === 0;
+
   return (
     <React.Fragment>
       <Helmet
@@ -115,8 +118,8 @@ const Layout: React.FC<IProps> = props => {
           if (loading) {
             return <Loader />;
           }
-          if (error) {
-            return null;
+          if (error && !isLoginPage) {
+            navigate('/');
           }
           // Redirect the user back home if they are not logged in and this is not the login page.
           if (data && !data.currentUser && !isLoginPage) {
@@ -130,12 +133,18 @@ const Layout: React.FC<IProps> = props => {
           if (isLoginPage) {
             return props.children;
           }
-          return (
-            <Main>
-              <EditorNav />
-              {props.children}
-            </Main>
-          );
+          if (data) {
+            return (
+              <UserContext.Provider value={data.currentUser}>
+                <Main>
+                  <EditorNav />
+                  {props.children}
+                </Main>
+              </UserContext.Provider>
+            );
+          }
+          navigate('/');
+          return null;
         }}
       </Query>
       <GlobalStyle />

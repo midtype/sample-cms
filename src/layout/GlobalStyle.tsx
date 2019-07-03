@@ -21,9 +21,10 @@ p, input, textarea {
   color: rgba(0,0,0,.7);
 }
 
-input {
+input, textarea {
   padding: 1rem;
   outline: none;
+  border: 1px solid rgba(0,0,0,.2);
 }
 
 h1,h2,h3,h4,h5 {
@@ -61,6 +62,11 @@ button {
 button.secondary {
   background: white;
   color: black;
+}
+
+button.error {
+  background: red;
+  border-color: red;
 }
 
 h1 {

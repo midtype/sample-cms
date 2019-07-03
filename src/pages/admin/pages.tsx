@@ -87,12 +87,14 @@ const PageList: React.FC<RouteComponentProps> = () => (
               data.pages.nodes.map(page => (
                 <PageListing key={page.id} {...page} />
               ))}
-            <StyledPageListing className="add-new">
-              <div className="text">
-                <h3>Create New Page</h3>
-              </div>
-              <Arrow />
-            </StyledPageListing>
+            <Link to="/admin/pages/new">
+              <StyledPageListing className="add-new">
+                <div className="text">
+                  <h3>Create New Page</h3>
+                </div>
+                <Arrow />
+              </StyledPageListing>
+            </Link>
           </div>
         );
       }}
@@ -100,12 +102,12 @@ const PageList: React.FC<RouteComponentProps> = () => (
   </Styled>
 );
 
-const AdminPages: React.FC<PageRendererProps> = props => {
+const AdminPages: React.FC<PageRendererProps> = (props, c) => {
   return (
     <Editor location={props.location}>
       <Router>
         <PageList path="admin/pages" />
-        <PageEditor path="admin/pages/:pageId" />
+        <PageEditor path="admin/pages/:id" />
       </Router>
     </Editor>
   );

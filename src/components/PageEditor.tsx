@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { RouteComponentProps } from '@reach/router';
+import { RouteComponentProps, NavigateFn } from '@reach/router';
 import { Mutation, Query, QueryResult } from 'react-apollo';
 
 import GET_PAGE, { IPageQuery } from '../apollo/graphql/getPage';
 import SET_PAGE from '../apollo/graphql/setPage';
+import CREATE_PAGE from '../apollo/graphql/createPage';
+import DELETE_PAGE from '../apollo/graphql/deletePage';
+import { UserContext } from '../layout/Editor';
 import Loader from './Loader';
 
 const Styled = styled.div`
@@ -12,12 +15,9 @@ const Styled = styled.div`
   p {
     margin: 0;
   }
-  button {
-    padding: 0.5rem 1rem;
-    border: 1px solid black;
-    border-radius: 3px;
+  textarea {
+    height: 10rem;
   }
-
   .toolbar {
     padding: 1rem 2rem;
     background: white;
@@ -41,6 +41,8 @@ const Styled = styled.div`
     margin: auto;
     padding-top: 7rem;
     overflow: auto;
+    display: flex;
+    flex-flow: column;
   }
 
   .page__section {
@@ -51,37 +53,78 @@ const Styled = styled.div`
   .page__section label {
     margin-bottom: 0.75rem;
   }
+  .page__section--delete {
+    margin-top: 3rem;
+  }
+  .page__section--delete button {
+    width: fit-content;
+  }
 `;
 
-const Page: React.FC<{ page: IPage }> = props => {
-  const { page } = props;
-  const [editing, setEditing] = useState(false);
+const Page: React.FC<{ navigate?: NavigateFn; page?: IPage }> = props => {
+  const { page, navigate } = props;
+  const [editing, setEditing] = useState(page ? false : true);
   const [fields, setFields] = useState({
-    title: page.title,
-    description: page.description,
-    slug: page.slug,
-    template: page.template
+    title: page ? page.title || '' : '',
+    description: page ? page.description || '' : '',
+    slug: page ? page.slug || '' : '',
+    template: page ? page.template || '' : ''
   });
   const SaveButton = (
-    <Mutation mutation={SET_PAGE} variables={{ ...fields, id: page.id }}>
-      {(savePage: any) => (
+    <UserContext.Consumer>
+      {user => {
+        return (
+          <Mutation
+            mutation={page ? SET_PAGE : CREATE_PAGE}
+            refetchQueries={['GetPages']}
+            variables={
+              page
+                ? { ...fields, id: page.id }
+                : { ...fields, ownerId: user ? user.id : null }
+            }
+          >
+            {(savePage: any) => (
+              <button
+                onClick={() => {
+                  savePage().then(() => setEditing(false));
+                }}
+              >
+                Save
+              </button>
+            )}
+          </Mutation>
+        );
+      }}
+    </UserContext.Consumer>
+  );
+  const DeleteButton = page ? (
+    <Mutation
+      mutation={DELETE_PAGE}
+      variables={{ id: page.id }}
+      refetchQueries={['GetPages']}
+    >
+      {(deletePage: any) => (
         <button
+          className="error"
           onClick={() => {
-            savePage();
-            setEditing(false);
+            deletePage().then(() => {
+              if (navigate) {
+                navigate('/admin/pages');
+              }
+            });
           }}
         >
-          Save
+          Delete
         </button>
       )}
     </Mutation>
-  );
+  ) : null;
   return (
     <Styled>
       <div className="toolbar">
         <div className="toolbar__section">
           <label>Page ID</label>
-          <p>{page.id}</p>
+          <p>{page ? page.id : 'New Page'}</p>
         </div>
         <div className="toolbar__section">
           {!editing && (
@@ -107,7 +150,7 @@ const Page: React.FC<{ page: IPage }> = props => {
           <label>Description</label>
           {!editing && <p>{fields.description}</p>}
           {editing && (
-            <input
+            <textarea
               value={fields.description}
               onChange={e =>
                 setFields({ ...fields, description: e.target.value })
@@ -135,14 +178,23 @@ const Page: React.FC<{ page: IPage }> = props => {
             />
           )}
         </div>
+        {editing && (
+          <div className="page__section page__section--delete">
+            {DeleteButton}
+          </div>
+        )}
       </div>
     </Styled>
   );
 };
 
-const PageEditor: React.FC<RouteComponentProps<{ pageId: string }>> = props => {
+const PageEditor: React.FC<RouteComponentProps<{ id: string }>> = props => {
+  const { id, navigate } = props;
+  if (id === 'new') {
+    return <Page navigate={navigate} />;
+  }
   return (
-    <Query query={GET_PAGE} variables={{ id: props.pageId }}>
+    <Query query={GET_PAGE} variables={{ id }}>
       {({ data, error, loading }: QueryResult<IPageQuery>) => {
         if (loading) {
           return <Loader />;
@@ -151,7 +203,7 @@ const PageEditor: React.FC<RouteComponentProps<{ pageId: string }>> = props => {
           return null;
         }
         if (data) {
-          return <Page page={data.page} />;
+          return <Page page={data.page} navigate={navigate} />;
         }
         return null;
       }}
