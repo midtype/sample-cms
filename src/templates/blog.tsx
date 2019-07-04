@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, graphql } from 'gatsby';
 import styled from 'styled-components';
+import remark from 'remark';
+import strip from 'strip-markdown';
 
 import Layout from '../layout/Layout';
 
@@ -55,15 +57,23 @@ const Page: React.FC<{ pageContext: IPage; data: IQueryData }> = props => {
           <p className="header__description">{description}</p>
         </div>
         <div className="blog-posts">
-          {posts.map(post => (
-            <Link to={`/blog/${post.slug}`} key={post.id}>
-              <div className="blog-posts__post">
-                <h3>{post.title}</h3>
-                <label>{post.createdAt}</label>
-                <p>{post.body.slice(0, 200)}</p>
-              </div>
-            </Link>
-          ))}
+          {posts.map(post => {
+            let body = '';
+            remark()
+              .use(strip)
+              .process(post.body, (_, file) => {
+                body = String(file);
+              });
+            return (
+              <Link to={`/blog/${post.slug}`} key={post.id}>
+                <div className="blog-posts__post">
+                  <h3>{post.title}</h3>
+                  <label>{post.createdAt}</label>
+                  <p>{body.slice(0, 200)}</p>
+                </div>
+              </Link>
+            );
+          })}
         </div>
       </Styled>
     </Layout>

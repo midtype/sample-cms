@@ -108,13 +108,16 @@ const AdminPages: React.FC<PageRendererProps> = props => {
                         files.forEach(file => {
                           const body = new FormData();
                           body.append('asset', file, file.name);
-                          fetch(`${process.env.GATSBY_API_URL}/upload`, {
-                            method: 'POST',
-                            headers: {
-                              authorization: `Bearer ${getJWT()}`
-                            },
-                            body
-                          })
+                          fetch(
+                            `${process.env.GATSBY_MIDTYPE_API_URL}/upload`,
+                            {
+                              method: 'POST',
+                              headers: {
+                                authorization: `Bearer ${getJWT()}`
+                              },
+                              body
+                            }
+                          )
                             .then(response => response.json())
                             .then(data => {
                               const { asset_id } = data;
