@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { RouteComponentProps, NavigateFn, navigate } from '@reach/router';
+import { RouteComponentProps, navigate } from '@reach/router';
 import styled from 'styled-components';
 import { Query, QueryResult, Mutation } from 'react-apollo';
 import Markdown from 'react-markdown';
@@ -150,12 +150,6 @@ class CustomImageSideButton extends ImageSideButton {
 }
 
 const blockButtons = [
-  {
-    label: 'H1',
-    style: 'header-one',
-    icon: 'header',
-    description: 'Heading 1'
-  },
   {
     label: 'H2',
     style: 'header-two',

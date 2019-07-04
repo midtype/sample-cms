@@ -48,7 +48,7 @@ a, button {
   font-size: inherit;
 }
 
-button {
+button, .button {
   padding: 0.5rem 1rem;
   border: 1px solid black;
   border-radius: 3px;
@@ -58,6 +58,7 @@ button {
   font-size: 0.6rem;
   background: black;
   color: white;
+  cursor: pointer;
 }
 
 button.secondary {

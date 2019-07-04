@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { RouteComponentProps, NavigateFn } from '@reach/router';
+import { RouteComponentProps, navigate } from '@reach/router';
 import { Mutation, Query, QueryResult } from 'react-apollo';
 
 import GET_PAGE, { IPageQuery } from '../apollo/graphql/getPage';
@@ -67,8 +67,8 @@ const Styled = styled.div`
   }
 `;
 
-const Page: React.FC<{ navigate?: NavigateFn; page?: IPage }> = props => {
-  const { page, navigate } = props;
+const Page: React.FC<{ page?: IPage }> = props => {
+  const { page } = props;
   const [editing, setEditing] = useState(page ? false : true);
   const [fields, setFields] = useState({
     title: page ? page.title || '' : '',
@@ -200,9 +200,9 @@ const Page: React.FC<{ navigate?: NavigateFn; page?: IPage }> = props => {
 };
 
 const PageEditor: React.FC<RouteComponentProps<{ id: string }>> = props => {
-  const { id, navigate } = props;
+  const { id } = props;
   if (id === 'new') {
-    return <Page navigate={navigate} />;
+    return <Page />;
   }
   return (
     <Query query={GET_PAGE} variables={{ id }}>
@@ -214,7 +214,7 @@ const PageEditor: React.FC<RouteComponentProps<{ id: string }>> = props => {
           return null;
         }
         if (data) {
-          return <Page page={data.page} navigate={navigate} />;
+          return <Page page={data.page} />;
         }
         return null;
       }}

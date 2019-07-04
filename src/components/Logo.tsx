@@ -31,7 +31,7 @@ const Logo: React.FC = () => {
     <Styled>
       <Link to="/" className="logo">
         <Symbol />
-        <div className="logo__name">Midtype Portfolio</div>
+        <div className="logo__name">Midtype</div>
       </Link>
     </Styled>
   );

@@ -43,7 +43,9 @@ const Styled = styled.header`
 const Nav: React.FC = (p, c) => {
   return (
     <Styled>
-      <Symbol />
+      <Link to="/">
+        <Symbol />
+      </Link>
       <div className="nav__sections">
         <Link
           to="/admin/pages"

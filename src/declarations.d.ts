@@ -37,4 +37,17 @@ interface IPost {
   body: string;
   section: ISection;
   author: IUser;
+  createdAt: string;
+}
+
+interface IAsset {
+  id: string;
+  location: string;
+}
+
+interface IPhoto {
+  id: string;
+  imageId: string;
+  image: IAsset;
+  owner: IUser;
 }

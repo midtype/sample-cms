@@ -49,9 +49,7 @@ const Main = styled.main`
 const Layout: React.FC<IProps> = props => {
   const data: IQuery = useStaticQuery(query);
   const { title, description, author } = data.site.siteMetadata;
-  const pages = data.allPages.nodes.filter(
-    page => !page.template || page.template === 'page'
-  );
+  const pages = data.allPages.nodes.filter(page => page.slug !== '/');
   const pageTitle = `${title}${props.pageTitle ? ` | ${props.pageTitle}` : ''}`;
   return (
     <React.Fragment>

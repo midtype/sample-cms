@@ -109,6 +109,21 @@ exports.createPages = ({ actions }) => {
                 template
               }
             }
+            posts {
+              nodes {
+                id
+                title
+                slug
+                body
+                author {
+                  name
+                }
+                section {
+                  id
+                  title
+                }
+              }
+            }
           }`
       }),
       method: 'POST'
@@ -126,6 +141,15 @@ exports.createPages = ({ actions }) => {
             }
           });
         });
+        res.data.posts.nodes.forEach(node => {
+          createPage({
+            path: `blog/${node.slug}`,
+            component: path.resolve(`./src/templates/post.tsx`),
+            context: {
+              ...node
+            }
+          });
+        });
         resolve();
       });
   });
@@ -137,9 +161,8 @@ exports.sourceNodes = ({ actions, createNodeId, createContentDigest }) => {
     fetchModels().then(res => {
       Object.keys(res.data).forEach(key => {
         res.data[key].nodes.forEach(item => {
-          console.log(`${key}:${item.id}`);
           const meta = {
-            id: createNodeId(`${key}:${item.id}`),
+            id: item.id,
             parent: null,
             children: [],
             internal: {
