@@ -1,6 +1,7 @@
 import React from 'react';
 import { graphql } from 'gatsby';
 import styled from 'styled-components';
+import Img from 'gatsby-image';
 
 import Layout from '../layout/Layout';
 
@@ -20,27 +21,18 @@ const Styled = styled.div`
     position: absolute;
     width: 100vw;
     left: 0;
-    margin-top: 3rem;
+    margin: 3rem 0;
     text-align: center;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
-    grid-auto-rows: 1fr;
+    grid-auto-rows: 20rem;
     grid-gap: 1rem;
   }
-  .photos-list::before {
-    content: '';
-    width: 0;
-    padding-bottom: 100%;
-    grid-row: 1 / 1;
-    grid-column: 1 / 1;
-  }
-  .photos-list > *:first-child {
-    grid-row: 1 / 1;
-    grid-column: 1 / 1;
-  }
   .photos-list__photo {
-    background-size: cover;
-    background-position: center center;
+    overflow: hidden;
+  }
+  .photos-list__photo .gatsby-image-wrapper {
+    min-height: 100%;
   }
 `;
 
@@ -67,15 +59,11 @@ const Page: React.FC<{ pageContext: IPage; data: IQueryData }> = props => {
         <div className="photos-list">
           {photos.map(photo => {
             const image = assets.find(asset => asset.id === photo.imageId);
-            return (
-              <div
-                key={photo.id}
-                className="photos-list__photo"
-                style={{
-                  backgroundImage: `url('${image ? image.location : ''}')`
-                }}
-              />
-            );
+            return image ? (
+              <div key={photo.id} className="photos-list__photo">
+                <Img fluid={image.localImage.childImageSharp.fluid} />
+              </div>
+            ) : null;
           })}
         </div>
       </Styled>
@@ -95,6 +83,13 @@ export const query = graphql`
       nodes {
         id
         location
+        localImage {
+          childImageSharp {
+            fluid(maxWidth: 1000) {
+              ...GatsbyImageSharpFluid
+            }
+          }
+        }
       }
     }
   }

@@ -43,6 +43,11 @@ interface IPost {
 interface IAsset {
   id: string;
   location: string;
+  localImage: {
+    childImageSharp: {
+      fluid: any;
+    };
+  };
 }
 
 interface IPhoto {
