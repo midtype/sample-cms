@@ -29,7 +29,7 @@ const PostListing: React.FC<IPost> = props => {
             {title}
             <span>{slug}</span>
           </h3>
-          <p>{body}</p>
+          <p>{body.slice(0, 100)}</p>
         </div>
         <Arrow />
       </ListItem>
@@ -53,7 +53,7 @@ const PostsList: React.FC<RouteComponentProps> = () => (
               data.posts.nodes.map(page => (
                 <PostListing key={page.id} {...page} />
               ))}
-            <Link to="/admin/pages/new">
+            <Link to="/admin/posts/new">
               <ListItem className="add-new">
                 <div className="text">
                   <h3>Create New Post</h3>

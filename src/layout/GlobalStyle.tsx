@@ -31,6 +31,7 @@ h1,h2,h3,h4,h5 {
   margin: 0;
   padding: 0;
   font-weight: 500;
+  line-height: initial !important;
 }
 
 code {

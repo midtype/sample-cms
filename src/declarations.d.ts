@@ -1,17 +1,7 @@
 declare module '*.png';
-declare module 'is-touch-device';
-declare module 'graphiql';
-declare module '@loadable/component';
-
-declare module '@editorjs/image';
-declare module '@editorjs/code';
-declare module '@editorjs/embed';
-declare module '@editorjs/header';
-declare module '@editorjs/link';
-declare module '@editorjs/list';
-declare module '@editorjs/paragraph';
-declare module '@editorjs/quote';
-declare module '@editorjs/table';
+declare module 'medium-draft';
+declare module 'markdown-draft-js';
+declare module 'draft-js';
 
 // GraphQL API Types
 interface ISiteMetadata {
