@@ -1,6 +1,6 @@
-const createHttpLink = require('apollo-link-http').createHttpLink;
-const Agent = require('https').Agent;
-const fetch = require('isomorphic-fetch');
+require('dotenv').config({
+  path: `.env.development`
+});
 
 module.exports = {
   siteMetadata: {

@@ -108,7 +108,7 @@ const AdminPages: React.FC<PageRendererProps> = props => {
                         files.forEach(file => {
                           const body = new FormData();
                           body.append('asset', file, file.name);
-                          fetch('https://api-staging.midtype.com/upload', {
+                          fetch(`${process.env.GATSBY_API_URL}/upload`, {
                             method: 'POST',
                             headers: {
                               authorization: `Bearer ${getJWT()}`

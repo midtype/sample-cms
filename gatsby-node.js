@@ -2,7 +2,7 @@ const fetch = require('isomorphic-fetch');
 const path = require('path');
 const Agent = require('https').Agent;
 
-const url = 'https://blog-staging.midtype.dev/graphql';
+const url = `https://${process.env.GATSBY_MIDTYPE_APP_ID}.midtype.dev/graphql`;
 
 const getQuery = type => `
 query { 

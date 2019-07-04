@@ -130,7 +130,7 @@ class CustomImageSideButton extends ImageSideButton {
     const file = e.target.files[0];
     const formData = new FormData();
     formData.append('asset', file, file.name);
-    fetch('https://api-staging.midtype.com/upload', {
+    fetch(`${process.env.GATSBY_API_URL}/upload`, {
       method: 'POST',
       headers: {
         authorization: `Bearer ${getJWT()}`
