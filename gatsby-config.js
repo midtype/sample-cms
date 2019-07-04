@@ -25,6 +25,16 @@ module.exports = {
         icon: `src/images/midtype-logo.png`
       }
     },
-    `gatsby-plugin-offline`
+    `gatsby-plugin-offline`,
+    `gatsby-plugin-sharp`,
+    `gatsby-transformer-sharp`,
+    {
+      resolve: `gatsby-plugin-remote-images`,
+      options: {
+        nodeType: 'assets',
+        imagePath: 'location',
+        name: 'midtypeImage'
+      }
+    }
   ]
 };
