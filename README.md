@@ -1,5 +1,7 @@
 # Midtype Starter
 
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/midtype/sample-cms)
+
 This project is a starter kit for using Midtype with the following libraries:
 
 - **GatsbyJS**, the [open-source front-end framework](https://gatsbyjs.org) for building statically-generated sites.
@@ -22,3 +24,6 @@ GATSBY_MIDTYPE_API_URL=https://api.midtype.com
 
 3. Run `yarn` locally to install all dependencies. Then run `yarn start` to run a development version of your site locally. Navigate to `http://localhost:8000` to see your site in action.
 4. Log into your site as an admin at `/login`. In the admin panel, you can create pages, blog posts, or upload photos. This acts as your custom CMS. Note that for any page, whatever you specify for the `template` field must be a `.tsx` file in `src/templates/`. For example, if you specify the `template` for a given page to be `about-page`, then ensure that you have a template file at `src/templates/about-page.tsx`. [Learn more about Gatsby templates here](https://www.gatsbyjs.org/contributing/docs-templates/).
+5. You can easily deploy this site using Netlify and the included `netlify.toml` package.
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/midtype/sample-cms)

@@ -1,3 +1,8 @@
 [context.production]
   publish = "public/"
   command = "yarn build"
+
+[template.environment]
+  GATSBY_MIDTYPE_APP_ID="YOUR MIDTYPE PROJECT ID"
+  GATSBY_GOOGLE_SIGN_IN="YOUR `http://localhost:8000/login` GOOGLE SIGN IN LINK"
+  GATSBY_MIDTYPE_API_URL="https://api.midtype.com"
