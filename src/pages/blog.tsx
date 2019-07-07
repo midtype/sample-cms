@@ -47,14 +47,13 @@ interface IQueryData {
 }
 
 const Page: React.FC<{ pageContext: IPage; data: IQueryData }> = props => {
-  const { title, description } = props.pageContext;
   const posts = props.data.allPosts.nodes;
   return (
     <Layout>
       <Styled>
         <div className="header">
-          <h1 className="header__title">{title}</h1>
-          <p className="header__description">{description}</p>
+          <h1 className="header__title">My Blog</h1>
+          <p className="header__description">Here are some of my writings.</p>
         </div>
         <div className="blog-posts">
           {posts.map(post => {

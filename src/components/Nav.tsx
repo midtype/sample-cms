@@ -49,6 +49,12 @@ const Nav: React.FC<IProps> = props => {
             <Link to={page.slug}>{page.title}</Link>
           </div>
         ))}
+        <div className="nav__sections__section">
+          <Link to="/blog">Blog</Link>
+        </div>
+        <div className="nav__sections__section">
+          <Link to="/photography">Photography</Link>
+        </div>
       </div>
     </Styled>
   );

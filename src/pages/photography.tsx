@@ -46,15 +46,13 @@ interface IQueryData {
 }
 
 const Page: React.FC<{ pageContext: IPage; data: IQueryData }> = props => {
-  const { title, description } = props.pageContext;
   const photos = props.data.allPhotos.nodes;
   const assets = props.data.allAssets.nodes;
   return (
     <Layout>
       <Styled>
         <div className="header">
-          <h1 className="header__title">{title}</h1>
-          <p className="header__description">{description}</p>
+          <h1 className="header__title">Photography</h1>
         </div>
         <div className="photos-list">
           {photos.map(photo => {
