@@ -43,16 +43,15 @@ interface IPost {
 interface IAsset {
   id: string;
   location: string;
+}
+
+interface IPhoto {
+  id: string;
+  image: IAsset;
+  owner: IUser;
   localImage: {
     childImageSharp: {
       fluid: any;
     };
   };
-}
-
-interface IPhoto {
-  id: string;
-  imageId: string;
-  image: IAsset;
-  owner: IUser;
 }

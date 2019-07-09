@@ -4,39 +4,101 @@ const Agent = require('https').Agent;
 
 const url = `https://${process.env.GATSBY_MIDTYPE_APP_ID}.midtype.dev/graphql`;
 
-const getQuery = type => `
+const query = `
 query { 
-  __type(name: "${type}") {
-    name
-    kind
-    fields {
-      name
-      type {
+  pages {
+    nodes {
+      id
+      title
+      slug
+      description
+      template
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+  posts {
+    nodes {
+      id
+      title
+      slug
+      body
+      author {
         name
-        ofType {
-          name
-        }
-        fields {
-          name
-          type {
-            name
-            fields {
-              name
-            }
-            ofType {
-              ofType {
-                name
-              }
-            }
-          }
-        }
       }
+      section {
+        id
+        title
+      }
+      createdAt
+      updatedAt
+      __typename
+    }
+  }
+  photos {
+    nodes {
+      id
+      image {
+        id
+        location
+        createdAt
+        updatedAt
+        __typename
+      }
+      createdAt
+      updatedAt
+      __typename
     }
   }
 }
 `;
 
-const modFetch = (url, query) =>
+const typeDefs = `
+type Page implements Node {
+  id: ID!
+  title: String!
+  slug: String!
+  description: String!
+  template: String!
+  updatedAt: Date! @dateformat
+  createdAt: Date! @dateformat
+  
+}
+type User implements Node {
+  id: ID!
+  name: String!
+  email: String!
+}
+type Section implements Node {
+  id: ID!
+  title: String!
+}
+type Post implements Node {
+  id: ID!
+  title: String!
+  slug: String!
+  body: String!
+  author: User!
+  section: Section!
+  updatedAt: Date! @dateformat
+  createdAt: Date! @dateformat
+}
+type Asset implements Node {
+  id: ID!
+  location: String!
+  updatedAt: Date! @dateformat
+  createdAt: Date! @dateformat
+}
+type Photo implements Node {
+  id: ID!
+  image: Asset!
+  updatedAt: Date! @dateformat
+  createdAt: Date! @dateformat
+}
+`;
+
+const midtypeFetch = () =>
   fetch(url, {
     agent: new Agent({ rejectUnauthorized: false }),
     headers: {
@@ -46,133 +108,51 @@ const modFetch = (url, query) =>
     method: 'POST'
   }).then(res => res.json());
 
-const fetchType = (url, type) => modFetch(url, getQuery(type));
-
-const genFieldsQuery = fields => {
-  return `{\n${fields
-    .filter(
-      field =>
-        !field.type.fields &&
-        (!field.type.ofType ||
-          field.type.ofType.name.indexOf('Connection') === -1)
-    )
-    .map(field => field.name)
-    .join('\n')}\n}`;
-};
-
-const fetchModels = () => {
-  return fetchType(url, 'Query').then(res => {
-    const models = res.data.__type.fields
-      .filter(
-        field => field.type.name && field.type.name.indexOf('Connection') > -1
-      )
-      // Filter out users and age models because we handle them specially.
-      .filter(field => field.name !== 'users')
-      .map(model => {
-        const nodes = model.type.fields.find(field => field.name === 'nodes');
-        return {
-          queryName: model.name,
-          type: nodes ? nodes.type.ofType.ofType.name : null
-        };
+exports.createPages = ({ actions }) => {
+  const { createPage } = actions;
+  return new Promise(resolve => {
+    midtypeFetch().then(res => {
+      res.data.pages.nodes.forEach(node => {
+        createPage({
+          path: node.slug,
+          component: path.resolve(
+            `./src/templates/${node.template || 'page'}.tsx`
+          ),
+          context: {
+            ...node
+          }
+        });
       });
-    const promises = models.map(model =>
-      fetchType(url, model.type).then(res => {
-        const fields = res.data.__type.fields;
-        model.query = `${model.queryName} {\nnodes\n${genFieldsQuery(fields)}}`;
-      })
-    );
-    return Promise.all(promises).then(() => {
-      const query = `query {\n${models
-        .map(model => model.query)
-        .join('\n')}\n}`;
-      return modFetch(url, query);
+      res.data.posts.nodes.forEach(node => {
+        createPage({
+          path: `blog/${node.slug}`,
+          component: path.resolve(`./src/templates/post.tsx`),
+          context: {
+            ...node
+          }
+        });
+      });
+      resolve();
     });
   });
 };
 
-exports.createPages = ({ actions }) => {
-  const { createPage } = actions;
+exports.sourceNodes = ({ actions, createContentDigest }) => {
+  const { createNode, createTypes } = actions;
+  createTypes(typeDefs);
   return new Promise(resolve => {
-    fetch(url, {
-      agent: new Agent({ rejectUnauthorized: false }),
-      headers: {
-        'content-type': 'application/json'
-      },
-      body: JSON.stringify({
-        query: `query { 
-            pages {
-              nodes {
-                id
-                title
-                slug
-                description
-                template
-              }
-            }
-            posts {
-              nodes {
-                id
-                title
-                slug
-                body
-                author {
-                  name
-                }
-                section {
-                  id
-                  title
-                }
-              }
-            }
-          }`
-      }),
-      method: 'POST'
-    })
-      .then(res => res.json())
-      .then(res => {
-        res.data.pages.nodes.forEach(node => {
-          createPage({
-            path: node.slug,
-            component: path.resolve(
-              `./src/templates/${node.template || 'page'}.tsx`
-            ),
-            context: {
-              ...node
-            }
-          });
-        });
-        res.data.posts.nodes.forEach(node => {
-          createPage({
-            path: `blog/${node.slug}`,
-            component: path.resolve(`./src/templates/post.tsx`),
-            context: {
-              ...node
-            }
-          });
-        });
-        resolve();
-      });
-  });
-};
-
-exports.sourceNodes = ({ actions, createNodeId, createContentDigest }) => {
-  const { createNode } = actions;
-  return new Promise(resolve => {
-    fetchModels().then(res => {
-      Object.keys(res.data).forEach(key => {
-        res.data[key].nodes.forEach(item => {
-          const meta = {
-            id: item.id,
-            parent: null,
-            children: [],
-            internal: {
-              type: key,
-              content: JSON.stringify(item),
-              contentDigest: createContentDigest(item)
-            }
-          };
-          createNode({ ...item, ...meta });
-        });
+    midtypeFetch().then(res => {
+      const { pages, posts, photos } = res.data;
+      [...pages.nodes, ...posts.nodes, ...photos.nodes].forEach(node => {
+        const meta = {
+          id: node.id,
+          internal: {
+            type: node.__typename,
+            content: JSON.stringify(node),
+            contentDigest: createContentDigest(node)
+          }
+        };
+        createNode({ ...node, ...meta });
       });
       resolve();
     });

@@ -37,17 +37,16 @@ const Styled = styled.div`
 `;
 
 interface IQueryData {
-  allPhotos: {
+  allPhoto: {
     nodes: IPhoto[];
   };
-  allAssets: {
+  allAsset: {
     nodes: IAsset[];
   };
 }
 
 const Page: React.FC<{ pageContext: IPage; data: IQueryData }> = props => {
-  const photos = props.data.allPhotos.nodes;
-  const assets = props.data.allAssets.nodes;
+  const photos = props.data.allPhoto.nodes;
   return (
     <Layout>
       <Styled>
@@ -55,14 +54,11 @@ const Page: React.FC<{ pageContext: IPage; data: IQueryData }> = props => {
           <h1 className="header__title">Photography</h1>
         </div>
         <div className="photos-list">
-          {photos.map(photo => {
-            const image = assets.find(asset => asset.id === photo.imageId);
-            return image ? (
-              <div key={photo.id} className="photos-list__photo">
-                <Img fluid={image.localImage.childImageSharp.fluid} />
-              </div>
-            ) : null;
-          })}
+          {photos.map(photo => (
+            <div key={photo.id} className="photos-list__photo">
+              <Img fluid={photo.localImage.childImageSharp.fluid} />
+            </div>
+          ))}
         </div>
       </Styled>
     </Layout>
@@ -71,19 +67,12 @@ const Page: React.FC<{ pageContext: IPage; data: IQueryData }> = props => {
 
 export const query = graphql`
   query GetPhotos {
-    allPhotos(sort: { fields: createdAt, order: DESC }) {
+    allPhoto(sort: { fields: createdAt, order: DESC }) {
       nodes {
         id
-        imageId
-      }
-    }
-    allAssets {
-      nodes {
-        id
-        location
         localImage {
           childImageSharp {
-            fluid(maxWidth: 1000) {
+            fluid {
               ...GatsbyImageSharpFluid
             }
           }

@@ -11,7 +11,7 @@ interface IQuery {
   site: {
     siteMetadata: ISiteMetadata;
   };
-  allPages: {
+  allPage: {
     nodes: IPage[];
   };
 }
@@ -29,7 +29,7 @@ const query = graphql`
         author
       }
     }
-    allPages {
+    allPage {
       nodes {
         id
         title
@@ -49,7 +49,7 @@ const Main = styled.main`
 const Layout: React.FC<IProps> = props => {
   const data: IQuery = useStaticQuery(query);
   const { title, description, author } = data.site.siteMetadata;
-  const pages = data.allPages.nodes.filter(page => page.slug !== '/');
+  const pages = data.allPage.nodes.filter(page => page.slug !== '/');
   const pageTitle = `${title}${props.pageTitle ? ` | ${props.pageTitle}` : ''}`;
   return (
     <React.Fragment>

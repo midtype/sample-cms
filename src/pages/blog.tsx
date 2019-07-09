@@ -41,13 +41,13 @@ const Styled = styled.div`
 `;
 
 interface IQueryData {
-  allPosts: {
+  allPost: {
     nodes: IPost[];
   };
 }
 
 const Page: React.FC<{ pageContext: IPage; data: IQueryData }> = props => {
-  const posts = props.data.allPosts.nodes;
+  const posts = props.data.allPost.nodes;
   return (
     <Layout>
       <Styled>
@@ -81,7 +81,7 @@ const Page: React.FC<{ pageContext: IPage; data: IQueryData }> = props => {
 
 export const query = graphql`
   query GetPosts {
-    allPosts(sort: { fields: createdAt, order: DESC }) {
+    allPost(sort: { fields: createdAt, order: DESC }) {
       nodes {
         id
         title
