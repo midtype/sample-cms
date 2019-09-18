@@ -25,7 +25,9 @@ query {
       slug
       body
       author {
-        name
+        private {
+          name
+        }
       }
       section {
         id
@@ -67,6 +69,9 @@ type Page implements Node {
 }
 type User implements Node {
   id: ID!
+  private: UserPrivate
+}
+type UserPrivate implements Node {
   name: String!
   email: String!
 }
@@ -102,7 +107,8 @@ const midtypeFetch = () =>
   fetch(url, {
     agent: new Agent({ rejectUnauthorized: false }),
     headers: {
-      'content-type': 'application/json'
+      'content-type': 'application/json',
+      Authorization: `Bearer ${process.env.GATSBY_MIDTYPE_API_KEY}`
     },
     body: JSON.stringify({ query }),
     method: 'POST'
@@ -142,6 +148,7 @@ exports.sourceNodes = ({ actions, createContentDigest }) => {
   createTypes(typeDefs);
   return new Promise(resolve => {
     midtypeFetch().then(res => {
+      console.log(res);
       const { pages, posts, photos } = res.data;
       [...pages.nodes, ...posts.nodes, ...photos.nodes].forEach(node => {
         const meta = {

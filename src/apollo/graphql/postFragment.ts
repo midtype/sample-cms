@@ -11,7 +11,9 @@ export default gql`
       title
     }
     author {
-      name
+      private {
+        name
+      }
     }
   }
 `;
