@@ -3,7 +3,7 @@ import fetch from 'isomorphic-fetch';
 import { getJWT } from '../utils/jwt';
 
 const client = new ApolloClient({
-  uri: `https://${process.env.GATSBY_MIDTYPE_APP_ID}.midtype.dev/graphql`,
+  uri: process.env.GATSBY_MY_APP_ENDPOINT,
   fetch,
   request: operation => {
     operation.setContext(() => {

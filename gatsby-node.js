@@ -2,7 +2,7 @@ const fetch = require('isomorphic-fetch');
 const path = require('path');
 const Agent = require('https').Agent;
 
-const url = `https://${process.env.GATSBY_MIDTYPE_APP_ID}.midtype.dev/graphql`;
+const url = process.env.GATSBY_MY_APP_ENDPOINT;
 
 const query = `
 query { 
@@ -105,14 +105,15 @@ type Photo implements Node {
 
 const midtypeFetch = () =>
   fetch(url, {
-    agent: new Agent({ rejectUnauthorized: false }),
     headers: {
       'content-type': 'application/json',
       Authorization: `Bearer ${process.env.GATSBY_MIDTYPE_API_KEY}`
     },
     body: JSON.stringify({ query }),
     method: 'POST'
-  }).then(res => res.json());
+  }).then(res => {
+    return res.json();
+  });
 
 exports.createPages = ({ actions }) => {
   const { createPage } = actions;

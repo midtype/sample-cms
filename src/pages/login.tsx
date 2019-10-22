@@ -25,6 +25,8 @@ const Styled = styled.div`
   }
 `;
 
+const SIGN_IN_LINK = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=310346463088-u5mebbn91d619r4poms613jvssm1gevn.apps.googleusercontent.com&redirect_uri=https://api.midtype.com/login&access_type=offline&state=name%3D${process.env.GATSBY_MY_APP_ID}%26redirect%3D${process.env.GATSBY_MY_APP_REDIRECT_URL}&scope=profile%20email`;
+
 const Login: React.FC<PageRendererProps> = props => {
   // Use Reach Routers' location function to get the query parameters in the URL.
   // Then check if we have a JWT included as a query parameter.
@@ -41,7 +43,7 @@ const Login: React.FC<PageRendererProps> = props => {
       <Styled>
         <Logo />
         <h2>Let&#8217;s Get Editing</h2>
-        <a href={process.env.GATSBY_GOOGLE_SIGN_IN}>
+        <a href={SIGN_IN_LINK}>
           <img className="google" src={GoogleSignIn} />
         </a>
       </Styled>

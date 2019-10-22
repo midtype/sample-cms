@@ -3,6 +3,8 @@
   command = "yarn build"
 
 [template.environment]
-  GATSBY_MIDTYPE_APP_ID="YOUR MIDTYPE PROJECT ID"
-  GATSBY_GOOGLE_SIGN_IN="YOUR `http://localhost:8000/login` GOOGLE SIGN IN LINK"
-  GATSBY_MIDTYPE_API_URL="https://api.midtype.com"
+  GATSBY_MY_APP_NAME="Display name for your app"
+  GATSBY_MY_APP_ID="Midtype Project ID"
+  GATSBY_MY_APP_ENDPOINT="Midtype Project Endpoint"
+  GATSBY_MY_APP_REDIRECT_URL="Where users should be redirected on login"
+  GATSBY_MIDTYPE_API_KEY="An API key from your Midtype project"

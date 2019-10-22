@@ -12,14 +12,18 @@ It was bootstrapped with [the default Gatsby Starter](https://github.com/faceboo
 ## Getting Started
 
 1. In [the "Authentication" section of the Midtype UI](https://app.midtype.com/project/auth), add two redirect URLs (note that your production frontend must be hosted on an `https` domain. If you don't know where you'll host your frontend for the moment, add the second redirect URL when you know.):
+
    - `http://localhost:8000/login`
    - `https://your-production-frontend-domain.com/login`
-  
+
 2. Set up your **local** environment variables by creating a file in the root of this project and name it `.env.development`. Add the following contents to this file:
+
 ```sh
-GATSBY_MIDTYPE_APP_ID=[YOUR MIDTYPE PROJECT ID]
-GATSBY_GOOGLE_SIGN_IN=[YOUR `http://localhost:8000/login` GOOGLE SIGN IN LINK]
-GATSBY_MIDTYPE_API_URL=https://api.midtype.com
+GATSBY_MY_APP_NAME="Display name for your app"
+GATSBY_MY_APP_ID="Midtype Project ID"
+GATSBY_MY_APP_ENDPOINT="Midtype Project Endpoint"
+GATSBY_MY_APP_REDIRECT_URL="Where users should be redirected on login"
+GATSBY_MIDTYPE_API_KEY="An API key from your Midtype project"
 ```
 
 3. Run `yarn` locally to install all dependencies. Then run `yarn start` to run a development version of your site locally. Navigate to `http://localhost:8000` to see your site in action.

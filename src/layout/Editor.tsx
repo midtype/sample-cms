@@ -122,11 +122,11 @@ const Layout: React.FC<IProps> = props => {
             navigate('/');
           }
           // Redirect the user back home if they are not logged in and this is not the login page.
-          if (data && !data.currentUser && !isLoginPage) {
+          if (data && !data.mUserInSession && !isLoginPage) {
             navigate('/');
           }
           // Redirect the user to the admin panel if they are logged in and this is the login page.
-          if (data && data.currentUser && isLoginPage) {
+          if (data && data.mUserInSession && isLoginPage) {
             navigate('/admin');
           }
           // Style the login page a little differently.
@@ -135,7 +135,7 @@ const Layout: React.FC<IProps> = props => {
           }
           if (data) {
             return (
-              <UserContext.Provider value={data.currentUser}>
+              <UserContext.Provider value={data.mUserInSession}>
                 <Main>
                   <EditorNav />
                   {props.children}

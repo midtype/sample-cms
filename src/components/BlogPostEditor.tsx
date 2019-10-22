@@ -125,30 +125,6 @@ const Styled = styled.div`
   }
 `;
 
-class CustomImageSideButton extends ImageSideButton {
-  private onChange(e: any) {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append('asset', file, file.name);
-    fetch(`${process.env.GATSBY_MIDTYPE_API_URL}/upload`, {
-      method: 'POST',
-      headers: {
-        authorization: `Bearer ${getJWT()}`
-      },
-      body: formData
-    })
-      .then(response => response.json())
-      .then(data => {
-        this.props.setEditorState(
-          addNewBlock(this.props.getEditorState(), Block.IMAGE, {
-            src: data.location
-          })
-        );
-      });
-    this.props.close();
-  }
-}
-
 const blockButtons = [
   {
     label: 'H2',
